@@ -26,53 +26,61 @@ ALI_FUNCTION_DB="$ALI_DIR/functions"
 [ -f "$ALI_FUNCTION_DB" ] || touch "$ALI_FUNCTION_DB"
 
 ali_delete() {
-    FUNCTION_NAME=$1
-    unset -f $FUNCTION_NAME
-    sed -i "/^$FUNCTION_NAME/ d" "$ALI_FUNCTION_DB"
+    sed -i "/^$1/ d" "$ALI_FUNCTION_DB"
 }
 
 ali_register() {
-    FUNCTION_NAME=$1
+    local FUNCTION_NAME=$1
     [ $(grep -c "^$FUNCTION_NAME" "$ALI_FUNCTION_DB") -eq 0 ] \
         || ali_delete "$FUNCTION_NAME"
 
-    FUNCTION_STRING=$(ali_define $@)
-    eval "$FUNCTION_STRING"
+    local FUNCTION_STRING=$(ali_define $@)
+    eval "function $FUNCTION_STRING"
 
-    echo "$FUNCTION_STRING" >> "$ALI_FUNCTION_DB"
+    printf "$FUNCTION_STRING\n" >> "$ALI_FUNCTION_DB"
+}
+
+ali__get_full_cmd() {
+    local CMD_PATH=$(whereis "$1" | grep -v "\.\$" | cut -s -d ' ' -f 2)
+    [ $? -eq 0 ] \
+        && printf $CMD_PATH \
+        || printf "$1"
 }
 
 ali_define() {
-    DUPLICATED_FUNCTION=0
-    FUNCTION_NAME=$1 && shift
-    CMD_ARGS=""
+    local DUPLICATED_FUNCTION=0
+    local FUNCTION_NAME=$1 && shift
+    local CMD_ARGS=""
 
-    EXTRA_ARGS_REQUIRED=1
+    local EXTRA_ARGS_REQUIRED=1
     for i in "$@"; do
         [[ "$i" == *\$* ]] && EXTRA_ARGS_REQUIRED=0 && i="\"$i\""
+        [[ "$i" == $FUNCTION_NAME ]] && i=$(ali__get_full_cmd $i)
         CMD_ARGS="$CMD_ARGS $i"
     done
 
     [ $EXTRA_ARGS_REQUIRED -eq 1 ] && CMD_ARGS="$CMD_ARGS \"\$@\""
 
-    FUNCTION_STRING="$FUNCTION_NAME() { $CMD_ARGS; }"
-    eval "$FUNCTION_STRING"
-    echo "$FUNCTION_STRING"
+    local FUNCTION_STRING="$FUNCTION_NAME() { $CMD_ARGS; }"
+    eval "function $FUNCTION_STRING"
+    printf "$FUNCTION_STRING\n"
 }
 
 ali_load() {
+    local FILE=""
     [ "$1" != "" ] \
         && FILE="$1" \
         || FILE="$ALI_FUNCTION_DB"
-    C=0
+    local C=0
     while read LINE; do
-        eval "$LINE"
+        eval "function $LINE"
         C=$((C+1))
     done < "$FILE"
+    [[ "$(alias)" != "" ]] && printf "Warning: Ali will unset your aliases\n" && unalias -a
 }
 
 ali_expand() {
-    declare -f $1
+    declare -f $1 || whereis $1
 }
 
 ali_list() {
@@ -80,7 +88,7 @@ ali_list() {
 }
 
 ali() {
-    ALI_METHOD=$1
+    local ALI_METHOD=$1
     shift
     "ali_$ALI_METHOD" $@
 }

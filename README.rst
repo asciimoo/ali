@@ -80,12 +80,6 @@ load
 Load persisted aliases
 
 
-Limitations/known issues
-========================
-
-- Redefinition of existing commands can cause infinite recursion. (e.g.: ``ali define ls ls -l``)
-
-
 Bugs
 ====
 
