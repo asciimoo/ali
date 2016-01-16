@@ -1,6 +1,6 @@
-=========================
-Ali - smart shell aliases
-=========================
+===================================
+Ali - smart shell alias replacement
+===================================
 
 The biggest problem with the standard shell alias system is its best feature: simplicity.
 In short, an alias is nothing else, just a substitution of a shell command prefix.
