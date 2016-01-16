@@ -31,8 +31,7 @@ ali_delete() {
 
 ali_register() {
     local FUNCTION_NAME=$1
-    [[ $(grep -c "^$FUNCTION_NAME" "$ALI_FUNCTION_DB") -eq 0 ]] \
-        || ali_delete "$FUNCTION_NAME"
+    grep -q -c "^$FUNCTION_NAME" "$ALI_FUNCTION_DB" || ali_delete "$FUNCTION_NAME"
 
     local FUNCTION_STRING=$(ali_define $@)
     eval "function $FUNCTION_STRING"
