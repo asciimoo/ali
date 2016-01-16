@@ -19,11 +19,11 @@
 
 ALI_DIR="$HOME/.config/ali"
 
-[ -d "$ALI_DIR" ] || mkdir -p $ALI_DIR
+[[ -d "$ALI_DIR" ]] || mkdir -p $ALI_DIR
 
 ALI_FUNCTION_DB="$ALI_DIR/functions"
 
-[ -f "$ALI_FUNCTION_DB" ] || touch "$ALI_FUNCTION_DB"
+[[ -f "$ALI_FUNCTION_DB" ]] || touch "$ALI_FUNCTION_DB"
 
 ali_delete() {
     sed -i "/^$1/ d" "$ALI_FUNCTION_DB"
@@ -31,7 +31,7 @@ ali_delete() {
 
 ali_register() {
     local FUNCTION_NAME=$1
-    [ $(grep -c "^$FUNCTION_NAME" "$ALI_FUNCTION_DB") -eq 0 ] \
+    [[ $(grep -c "^$FUNCTION_NAME" "$ALI_FUNCTION_DB") -eq 0 ]] \
         || ali_delete "$FUNCTION_NAME"
 
     local FUNCTION_STRING=$(ali_define $@)
@@ -42,7 +42,7 @@ ali_register() {
 
 ali__get_full_cmd() {
     local CMD_PATH=$(whereis "$1" | grep -v "\.\$" | cut -s -d ' ' -f 2)
-    [ $? -eq 0 ] \
+    [[ $? -eq 0 ]] \
         && printf $CMD_PATH \
         || printf "$1"
 }
@@ -59,7 +59,7 @@ ali_define() {
         CMD_ARGS="$CMD_ARGS $i"
     done
 
-    [ $EXTRA_ARGS_REQUIRED -eq 1 ] && CMD_ARGS="$CMD_ARGS \"\$@\""
+    [[ $EXTRA_ARGS_REQUIRED -eq 1 ]] && CMD_ARGS="$CMD_ARGS \"\$@\""
 
     local FUNCTION_STRING="$FUNCTION_NAME() { $CMD_ARGS; }"
     eval "function $FUNCTION_STRING"
@@ -68,7 +68,7 @@ ali_define() {
 
 ali_load() {
     local FILE=""
-    [ "$1" != "" ] \
+    [[ "$1" != "" ]] \
         && FILE="$1" \
         || FILE="$ALI_FUNCTION_DB"
     local C=0
