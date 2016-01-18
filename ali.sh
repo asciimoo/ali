@@ -26,12 +26,12 @@ ALI_FUNCTION_DB="$ALI_DIR/functions"
 [[ -f "$ALI_FUNCTION_DB" ]] || touch "$ALI_FUNCTION_DB"
 
 ali_delete() {
-    sed -i "/^$1()/ d" "$ALI_FUNCTION_DB"
+    sed -i "/^function $1()/ d" "$ALI_FUNCTION_DB"
 }
 
 ali_register() {
     local FUNCTION_NAME=$1
-    grep -q "^$FUNCTION_NAME()" "$ALI_FUNCTION_DB" && ali_delete "$FUNCTION_NAME"
+    grep -q "^function $FUNCTION_NAME()" "$ALI_FUNCTION_DB" && ali_delete "$FUNCTION_NAME"
 
     ali_define "$@" >> "$ALI_FUNCTION_DB"
 }
@@ -54,8 +54,8 @@ ali_define() {
 
     [[ $EXTRA_ARGS_REQUIRED -eq 1 ]] && CMD_ARGS="$CMD_ARGS \"\$@\""
 
-    local FUNCTION_STRING="$FUNCTION_NAME() { $CMD_ARGS; }"
-    eval "function $FUNCTION_STRING"
+    local FUNCTION_STRING="function $FUNCTION_NAME() { $CMD_ARGS; }"
+    eval "$FUNCTION_STRING"
     echo "$FUNCTION_STRING"
 }
 
