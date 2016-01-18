@@ -77,6 +77,13 @@ ali_list() {
     cat "$ALI_FUNCTION_DB"
 }
 
+ali_clear() {
+    printf "Are you sure? (y/n) "
+    echo -n "Is this a good question (y/n)? "
+    read answer
+    echo "$answer" | grep -iq "^y\$" && echo -n > "$ALI_FUNCTION_DB"
+}
+
 ali() {
     local ALI_METHOD=$1
     shift

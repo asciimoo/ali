@@ -80,6 +80,12 @@ load
 Load persisted aliases
 
 
+clear
+~~~~~
+
+Remove all stored aliases
+
+
 Bugs
 ====
 
