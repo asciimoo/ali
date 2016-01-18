@@ -65,10 +65,7 @@ ali_load() {
         && FILE="$1" \
         || FILE="$ALI_FUNCTION_DB"
     local C=0
-    while read LINE; do
-        eval "function $LINE"
-        C=$((C+1))
-    done < "$FILE"
+    source "$FILE"
     [[ "$(alias)" != "" ]] && printf "Warning: Ali will unset your aliases\n" && unalias -a
 }
 
