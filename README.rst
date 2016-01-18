@@ -6,6 +6,9 @@ The biggest problem with the standard shell alias system is its best feature: si
 In short, an alias is nothing else, just a substitution of a shell command prefix.
 Ali tries to stay as simple as the built-in alias command, while providing way more functionality and flexibility.
 
+.. image:: docs/images/demo.gif
+   :alt: Usage demo
+   :align: center
 
 Features
 ========
