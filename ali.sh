@@ -55,7 +55,7 @@ ali_define() {
     [[ $EXTRA_ARGS_REQUIRED -eq 1 ]] && CMD_ARGS="$CMD_ARGS \"\$@\""
 
     local FUNCTION_STRING="function $FUNCTION_NAME() { $CMD_ARGS; }"
-    eval "$FUNCTION_STRING"
+    eval "$FUNCTION_STRING" || return 1
     echo "$FUNCTION_STRING"
 }
 
