@@ -34,7 +34,9 @@ ali_register() {
 }
 
 ali__get_full_cmd() {
-    { whereis "$1" | grep -v "\.\$" | cut -s -d ' ' -f 2; echo "$1"; } | head -1
+    [[ "$OSTYPE" == linux* ]] \
+        && { whereis "$1" | cut -s -d ' ' -f 2; echo "$1"; } | head -1 \
+        || whereis "$1"
 }
 
 ali_define() {
