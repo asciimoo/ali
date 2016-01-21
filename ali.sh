@@ -1,6 +1,3 @@
-#!/bin/sh
-
-
 # Ali is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +14,7 @@
 # (C) 2016- by Adam Tauber, <asciimoo@gmail.com>
 
 
-ALI_DIR="$HOME/.config/ali"
+ALI_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ali"
 
 [[ -d "$ALI_DIR" ]] || mkdir -p $ALI_DIR
 
