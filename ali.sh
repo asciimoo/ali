@@ -79,7 +79,6 @@ ali_list() {
 
 ali_clear() {
     printf "Are you sure? (y/n) "
-    echo -n "Is this a good question (y/n)? "
     read answer
     echo "$answer" | grep -iq "^y\$" && echo -n > "$ALI_FUNCTION_DB"
 }
