@@ -80,7 +80,7 @@ ali_list() {
 ali_clear() {
     printf "Are you sure? (y/n) "
     read answer
-    echo "$answer" | grep -iq "^y\$" && echo -n > "$ALI_FUNCTION_DB"
+    echo "$answer" | grep -iq "^y\$" && truncate -s 0 "$ALI_FUNCTION_DB"
 }
 
 ali() {
