@@ -82,9 +82,20 @@ ali_clear() {
     echo "$answer" | grep -iq "^y\$" && truncate -s 0 "$ALI_FUNCTION_DB"
 }
 
+ali_help() {
+    printf "ali - alias manager\n\n"
+    printf "Commands:\n"
+    printf "    define <ALIAS> <CMD..>\n"
+    printf "    define <ALIAS>\n"
+    printf "    expand <ALIAS>\n"
+    printf "    list\n"
+    printf "    load <ALIAS_FILE>\n"
+    printf "    clear\n"
+}
+
 ali() {
     local ALI_METHOD=$1
-    shift
+    shift 2>/dev/null || ali_help
     "ali_$ALI_METHOD" $@
 }
 
