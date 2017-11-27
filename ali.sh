@@ -46,7 +46,7 @@ ali_define() {
 
     local EXTRA_ARGS_REQUIRED=1
     for i in "$@"; do
-        [[ "$i" == *\$* ]] && EXTRA_ARGS_REQUIRED=0 && i="\"$i\""
+        [[ "$i" == *\$* ]] && EXTRA_ARGS_REQUIRED=0
         [[ "$i" == $FUNCTION_NAME ]] && i=$(ali__get_full_cmd $i)
         CMD_ARGS="$CMD_ARGS $i"
     done
@@ -91,12 +91,12 @@ ali_help() {
     printf "    list\n"
     printf "    load <ALIAS_FILE>\n"
     printf "    clear\n"
+    return 1
 }
 
 ali() {
     local ALI_METHOD=$1
-    shift 2>/dev/null || ali_help
-    "ali_$ALI_METHOD" $@
+    shift 2>/dev/null || ali_help && "ali_$ALI_METHOD" $@
 }
 
 ali_load
